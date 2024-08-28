@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plan Plus - Gestor Financiero</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <header>
         <h1>Gestor Financiero - Plan Plus</h1>
         <nav>
-            <a href="index.html">Inicio</a> |
-            <a href="plus.html">Plan Plus</a> |
-            <a href="premium.html">Plan Premium</a>
+            <a href="{{ url_for('index') }}">Inicio</a> |
+            <a href="{{ url_for('plus') }}">Plan Plus</a> |
+            <a href="{{ url_for('premium') }}">Plan Premium</a>
         </nav>
     </header>
     <section id="plus">
@@ -23,6 +23,35 @@
             <li><strong>Gestión de Deudas:</strong> Registra y sigue tus préstamos y deudas.</li>
             <li><strong>Objetivos de Ahorro:</strong> Establece y controla tus metas de ahorro.</li>
         </ul>
+        <h3>Registrar Datos</h3>
+        <form action="/add_plus" method="post">
+            <label for="type">Tipo:</label>
+            <select id="type" name="type" required>
+                <option value="ingreso">Ingreso</option>
+                <option value="gasto">Gasto</option>
+                <option value="presupuesto">Presupuesto</option>
+                <option value="deuda">Deuda</option>
+                <option value="ahorro">Ahorro</option>
+            </select>
+            <br>
+            <label for="amount">Monto:</label>
+            <input type="number" id="amount" name="amount" required>
+            <br>
+            <label for="description">Descripción:</label>
+            <input type="text" id="description" name="description" required>
+            <br>
+            <button type="submit">Agregar</button>
+        </form>
+        <h3>Datos Registrados</h3>
+        <ul>
+            {% for entry in entries %}
+                <li>{{ entry['type'] }}: ${{ entry['amount'] }} - {{ entry['description'] }}</li>
+            {% endfor %}
+        </ul>
+        <h3>Resumen</h3>
+        <p><strong>Total Ingresos:</strong> ${{ total_ingresos }}</p>
+        <p><strong>Total Gastos:</strong> ${{ total_gastos }}</p>
+        <p><strong>Balance:</strong> ${{ balance }}</p>
     </section>
     <footer>
         <p>© 2024 Gestor Financiero</p>

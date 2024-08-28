@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Básico - FinanSys</title>
+    <link rel="stylesheet" href="C:/Users/nnn/gestor_financiero_flask/static/styles.css">
+    <!-- Ruta relativa: <link rel="stylesheet" href="static/styles.css"> -->
+</head>
+<body>
+    <header class="header">
+        <div class="logo">FinanSys</div>
+        <nav class="menu">
+            <a href="index.html">Inicio</a>
+            <a href="basico.html" class="active">Mi Plan</a>
+            <a href="ayuda.html">Ayuda</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Plan Básico</h1>
+        <div class="form-container">
+            <div class="form-box">
+                <h2>Ingresos</h2>
+                <form id="income-form">
+                    <label for="income-amount">Monto</label>
+                    <input type="number" id="income-amount" name="income-amount" placeholder="Ingrese el monto" required>
+                    <label for="income-description">Descripción</label>
+                    <input type="text" id="income-description" name="income-description" placeholder="Ingrese una descripción">
+                    <button type="button" onclick="addIncome()">Ingresar</button>
+                </form>
+                <div id="income-entries" class="entries"></div>
+            </div>
+
+            <div class="form-box">
+                <h2>Gastos</h2>
+                <form id="expense-form">
+                    <label for="expense-amount">Monto</label>
+                    <input type="number" id="expense-amount" name="expense-amount" placeholder="Ingrese el monto" required>
+                    <label for="expense-description">Descripción</label>
+                    <input type="text" id="expense-description" name="expense-description" placeholder="Ingrese una descripción">
+                    <button type="button" onclick="addExpense()">Ingresar</button>
+                </form>
+                <div id="expense-entries" class="entries"></div>
+            </div>
+
+            <div class="form-box">
+                <h2>Balance Mensual</h2>
+                <button type="button" onclick="calculateBalance()">Calcular</button>
+                <div id="balance-result" class="entries"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        &copy; 2024 FinanSys. Todos los derechos reservados.
+    </footer>
+
+    <script>
+        // JavaScript para manejar los ingresos, gastos y balance
+        let incomes = [];
+        let expenses = [];
+
+        function addIncome() {
+            const amount = document.getElementById('income-amount').value;
+            const description = document.getElementById('income-description').value;
+            if (amount) {
+                incomes.push({ amount, description });
+                document.getElementById('income-form').reset();
+                updateIncomeEntries();
+            }
+        }
+
+        function addExpense() {
+            const amount = document.getElementById('expense-amount').value;
+            const description = document.getElementById('expense-description').value;
+            if (amount) {
+                expenses.push({ amount, description });
+                document.getElementById('expense-form').reset();
+                updateExpenseEntries();
+            }
+        }
+
+        function updateIncomeEntries() {
+            const incomeEntries = document.getElementById('income-entries');
+            incomeEntries.innerHTML = '';
+            incomes.forEach(income => {
+                const entry = document.createElement('p');
+                entry.textContent = `$${income.amount} - ${income.description}`;
+                incomeEntries.appendChild(entry);
+            });
+        }
+
+        function updateExpenseEntries() {
+            const expenseEntries = document.getElementById('expense-entries');
+            expenseEntries.innerHTML = '';
+            expenses.forEach(expense => {
+                const entry = document.createElement('p');
+                entry.textContent = `$${expense.amount} - ${expense.description}`;
+                expenseEntries.appendChild(entry);
+            });
+        }
+
+        function calculateBalance() {
+            const totalIncome = incomes.reduce((acc, income) => acc + parseFloat(income.amount), 0);
+            const totalExpense = expenses.reduce((acc, expense) => acc + parseFloat(expense.amount), 0);
+            const balance = totalIncome - totalExpense;
+            const balanceResult = document.getElementById('balance-result');
+            balanceResult.textContent = `Balance: $${balance.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
